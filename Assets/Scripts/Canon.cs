@@ -86,7 +86,11 @@ public class Canon : MonoBehaviour
     void FixedUpdate()
     {
         firePeriod += Time.deltaTime;
-        if (Input.GetAxisRaw("Horizontal") > 0)
+        // for Android
+        float horizontalInput = Input.acceleration.x;
+        // for PC 
+        //float horizontalInput = Input.GetAxisRaw("Horizontal"); 
+        if (horizontalInput > 0)
         {
             Quaternion rot = Quaternion.Euler(new Vector3(0, 0, -45));
             rb.MoveRotation(rot);
@@ -98,7 +102,7 @@ public class Canon : MonoBehaviour
                 rb.velocity = Vector3.zero;
             }
         }
-        else if (Input.GetAxisRaw("Horizontal") < 0)
+        else if (horizontalInput < 0)
         {
             Quaternion rot = Quaternion.Euler(new Vector3(0, 0, 45));
             rb.MoveRotation(rot);
