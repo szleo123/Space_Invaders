@@ -47,7 +47,7 @@ public class Global : MonoBehaviour
     {
         levelClear = true;
         curLevel = 0;
-        timer = 30; 
+        timer = 40; 
         score = 0;
         lives = 2;
         deathTrigger = false; 
@@ -58,7 +58,7 @@ public class Global : MonoBehaviour
         screenLower = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, originInScreenCoords.z)).z;
         alienInRow = 12;
         alienRow = 5;
-        goalScore = 500; 
+        goalScore = 1000; 
         FPC = GameObject.Find("FPC");
         mainCamera = GameObject.Find("Main Camera");
         Instantiate(Canon, new Vector3(0, 0, 0), Quaternion.identity);
@@ -98,12 +98,32 @@ public class Global : MonoBehaviour
         if (levelClear)
         {
             curLevel++;
-            goalScore += 500; 
             levelClear = false;
             SpawnAliens();
 
         }
+        // handle timer case 
         timer -= Time.deltaTime; 
+        if (timer < 0)
+        {
+            if (score < goalScore)
+            {
+                win = false;
+                SceneManager.LoadScene("resultScene");
+            }
+            else
+            {
+                GameObject[] aliens = GameObject.FindGameObjectsWithTag("Alien");
+                foreach (GameObject alien in aliens)
+                {
+                    Destroy(alien);
+                }
+                alienTotal = 0;
+                timer = 40;
+                score = 0;
+                goalScore += 500;
+            }
+        }
         // handle live decreases 
         if (deathTrigger)
         {
@@ -129,7 +149,7 @@ public class Global : MonoBehaviour
         {
             levelClear = true;
         }
-        if (curLevel == 10)
+        if (curLevel == 5)
         {
             win = true;
             SceneManager.LoadScene("resultScene"); 
