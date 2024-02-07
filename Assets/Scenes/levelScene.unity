@@ -619,7 +619,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 12
+  orthographic size: 16
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -769,6 +769,9 @@ MonoBehaviour:
   Bunker: {fileID: 7226681295216194449, guid: 1268276ec94f3e14b8a98dbc55bd8820, type: 3}
   FPC: {fileID: 0}
   mainCamera: {fileID: 0}
+  Platform: {fileID: 5059531911959670261, guid: 99ad1908bd7c1e247bd94effc189fe76, type: 3}
+  Basket: {fileID: 2765589659138909285, guid: d0b34aec910416343a53c179fea2e24c, type: 3}
+  Bouncer: {fileID: 4317475092903690536, guid: 7e8093207af7af147a5194b6deeacf47, type: 3}
   timer: 0
   score: 0
   lives: 0
@@ -777,6 +780,7 @@ MonoBehaviour:
   respawntimer: 0
   originInScreenCoords: {x: 0, y: 0, z: 0}
   curLevel: 0
+  alienTotal: 0
   screenUpper: 0
   screenLower: 0
   screenLeft: 0

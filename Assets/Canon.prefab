@@ -114,7 +114,7 @@ Transform:
   m_GameObject: {fileID: 1135491370777821132}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 9.999079, y: 0, z: -18.276411}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -190,8 +190,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.9615567, y: 1, z: 1.6158378}
-  m_Center: {x: 0.044577837, y: 0, z: 0.020584792}
+  m_Size: {x: 0.9615567, y: 5.7044086, z: 3.6907177}
+  m_Center: {x: 0.044577837, y: 0.09239769, z: -0.7619505}
 --- !u!54 &2727786008604519170
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -200,7 +200,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1135491370777821132}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 5
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -235,3 +235,5 @@ MonoBehaviour:
   bullet: {fileID: 6609581135640692472, guid: 722e3b70c44ef82458798611d2f668d2, type: 3}
   deathExplosion: {fileID: 5418726790074646971, guid: 70fc5880ac6b41b41bc7f3e3b6dcfff8, type: 3}
   shootSound: {fileID: 8300000, guid: 717ccbf25776a66458ff277081f30634, type: 3}
+  FPC: {fileID: 0}
+  mainCamera: {fileID: 0}

@@ -9,7 +9,7 @@ public class Canon : MonoBehaviour
     public Vector3 moveSpeed;
     public GameObject bullet;
     private float firePeriod;
-    private const float fireCooldown=0.6f;
+    private const float fireCooldown=0.3f;
     private Vector3 originInScreenCoords;
     private Vector3 botLeft; 
     private Vector3 botRight; 
@@ -20,11 +20,14 @@ public class Canon : MonoBehaviour
     public GameObject mainCamera;
     private float boarderLeft;
     private float boarderRight;
+    private float fixedZ;
+    private float fixedY;
+    Rigidbody rb; 
 
     // Start is called before the first frame update
     void Start()
     {
-        moveSpeed.x = 0.2f;
+        moveSpeed.x = 10.0f;
         firePeriod = 0.0f;
         GameObject glo = GameObject.Find("GlobalObject");
         Global g = glo.GetComponent<Global>();
@@ -33,6 +36,8 @@ public class Canon : MonoBehaviour
         botCenter = new Vector3(0.5f, 0.08f, originInScreenCoords.z);
         botRight = new Vector3(0.95f, 0.08f, originInScreenCoords.z); 
         gameObject.transform.position = Camera.main.ViewportToWorldPoint(botCenter);
+        fixedZ = gameObject.transform.position.z;
+        fixedY = gameObject.transform.position.y;
         boarderRight = Camera.main.ViewportToWorldPoint(botRight).x;
         boarderLeft = Camera.main.ViewportToWorldPoint(botLeft).x;
         FPC = g.FPC;
@@ -43,6 +48,7 @@ public class Canon : MonoBehaviour
         mainCamera = GameObject.Find("Main Camera");
         FPC.SetActive(false);
         mainCamera.SetActive(true);
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -62,7 +68,8 @@ public class Canon : MonoBehaviour
 
             AudioSource.PlayClipAtPoint(shootSound, gameObject.transform.position);
         }
-        if (Input.GetButtonDown("Jump"))
+        // disable the first person view 
+       /* if (Input.GetButtonDown("Jump"))
         {
             if (FPC.activeSelf)
             {
@@ -73,7 +80,7 @@ public class Canon : MonoBehaviour
                 mainCamera.SetActive(false);
                 FPC.SetActive(true);
             }
-        }
+        }*/
     }
 
     void FixedUpdate()
@@ -82,26 +89,35 @@ public class Canon : MonoBehaviour
         if (Input.GetAxisRaw("Horizontal") > 0)
         {
             Quaternion rot = Quaternion.Euler(new Vector3(0, 0, -45));
-            GetComponent<Rigidbody>().MoveRotation(rot);
+            rb.MoveRotation(rot);
             if (gameObject.transform.position.x <= boarderRight)
             {
-                gameObject.transform.position += moveSpeed;
+                rb.velocity = new Vector3(moveSpeed.x, 0, 0); 
+            }else
+            {
+                rb.velocity = Vector3.zero;
             }
         }
         else if (Input.GetAxisRaw("Horizontal") < 0)
         {
             Quaternion rot = Quaternion.Euler(new Vector3(0, 0, 45));
-            GetComponent<Rigidbody>().MoveRotation(rot);
+            rb.MoveRotation(rot);
             if (gameObject.transform.position.x >= boarderLeft)
             {
-                gameObject.transform.position -= moveSpeed;
+                rb.velocity = new Vector3(-moveSpeed.x, 0, 0);
+            }else
+            {
+                rb.velocity = Vector3.zero;
             }
         }
         else
         {
+            rb.velocity = Vector3.zero;
             Quaternion rot = Quaternion.Euler(new Vector3(0, 0, 0));
-            GetComponent<Rigidbody>().MoveRotation(rot);
+            rb.MoveRotation(rot);
         }
+        // make sure the player is fixed in 2 directions 
+        gameObject.transform.position = new Vector3(transform.position.x, fixedY, fixedZ);
     }
 
     void OnCollisionEnter(Collision collision)
@@ -110,9 +126,14 @@ public class Canon : MonoBehaviour
         if (collider.CompareTag("Bullets"))
         {
             BulletScript b = collider.gameObject.GetComponent<BulletScript>();
-            b.Die();
+            if (b.fromAlien) Die();
         }
-        Die(); 
+    }
+
+    void OnCollisionExit(Collision collision)
+    {
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
     }
 
     public void Die()

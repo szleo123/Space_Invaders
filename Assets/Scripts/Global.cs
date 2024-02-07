@@ -13,6 +13,9 @@ public class Global : MonoBehaviour
     public GameObject Bunker;
     public GameObject FPC;
     public GameObject mainCamera;
+    public GameObject Platform;
+    public GameObject Basket;
+    public GameObject Bouncer; 
     public float timer;
     public float score;
     public int lives;
@@ -23,10 +26,11 @@ public class Global : MonoBehaviour
     private bool levelClear;
     public int curLevel;
     // Parameters for alien spawning set up 
-    private float upper = 0.95f;
-    private float lower = 0.6f;
-    private float left = 0.15f;
-    private float right = 0.85f; 
+    private float upper = 0.97f; //0.95
+    private float lower = 0.7f; //0.6
+    private float left = 0.15f; //0.15
+    private float right = 0.85f; //0.85
+    /// /////////////////////////////////
     private float alienInRow; 
     private float alienRow;
     public int alienTotal;
@@ -34,6 +38,7 @@ public class Global : MonoBehaviour
     public float screenLower;
     public float screenLeft;
     public float screenRight;
+    public float goalScore; 
 
     public static bool win;
 
@@ -42,9 +47,9 @@ public class Global : MonoBehaviour
     {
         levelClear = true;
         curLevel = 0;
-        timer = 0; 
+        timer = 30; 
         score = 0;
-        lives = 3;
+        lives = 2;
         deathTrigger = false; 
         respawnTime = 2;
         respawntimer = 0;
@@ -53,13 +58,37 @@ public class Global : MonoBehaviour
         screenLower = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, originInScreenCoords.z)).z;
         alienInRow = 12;
         alienRow = 5;
+        goalScore = 500; 
         FPC = GameObject.Find("FPC");
         mainCamera = GameObject.Find("Main Camera");
         Instantiate(Canon, new Vector3(0, 0, 0), Quaternion.identity);
-        Instantiate(Bunker, Camera.main.ViewportToWorldPoint(new Vector3(0.2f, 0.3f, originInScreenCoords.z)), Quaternion.identity);
-        Instantiate(Bunker, Camera.main.ViewportToWorldPoint(new Vector3(0.4f, 0.3f, originInScreenCoords.z)), Quaternion.identity);
-        Instantiate(Bunker, Camera.main.ViewportToWorldPoint(new Vector3(0.6f, 0.3f, originInScreenCoords.z)), Quaternion.identity);
-        Instantiate(Bunker, Camera.main.ViewportToWorldPoint(new Vector3(0.8f, 0.3f, originInScreenCoords.z)), Quaternion.identity);
+        Vector3 platformPos = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.04f ,originInScreenCoords.z));
+        Instantiate(Platform, platformPos, Quaternion.identity);
+        Vector3 basketPos = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.16f, originInScreenCoords.z));
+        Instantiate(Basket, basketPos, Quaternion.identity);
+        Vector3 bouncerPos; 
+        // remove bunker for beta gameplay
+        /*        Instantiate(Bunker, Camera.main.ViewportToWorldPoint(new Vector3(0.2f, 0.3f, originInScreenCoords.z)), Quaternion.identity);
+                Instantiate(Bunker, Camera.main.ViewportToWorldPoint(new Vector3(0.4f, 0.3f, originInScreenCoords.z)), Quaternion.identity);
+                Instantiate(Bunker, Camera.main.ViewportToWorldPoint(new Vector3(0.6f, 0.3f, originInScreenCoords.z)), Quaternion.identity);
+                Instantiate(Bunker, Camera.main.ViewportToWorldPoint(new Vector3(0.8f, 0.3f, originInScreenCoords.z)), Quaternion.identity);*/
+        // initialize the set of bouncers
+        float bStart = 0.1f;
+        float bEnd = 0.9f; 
+        float numBouncerPerRow = 6; 
+        float bounceInc = (bEnd - bStart) / numBouncerPerRow;
+        float vStart = 0.3f;
+        float vInc = 0.08f; 
+        for (int i = 0; i <= numBouncerPerRow; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                float tester = 0;
+                if (j % 2 == 0) tester = bounceInc / 2; 
+                bouncerPos = Camera.main.ViewportToWorldPoint(new Vector3(bStart + bounceInc * i + tester, vStart + j * vInc, originInScreenCoords.z));
+                Instantiate(Bouncer, bouncerPos, Quaternion.identity);
+            }
+        }
 
     }
 
@@ -69,12 +98,13 @@ public class Global : MonoBehaviour
         if (levelClear)
         {
             curLevel++;
+            goalScore += 500; 
             levelClear = false;
             SpawnAliens();
-            // Instantiate(AlienH, new Vector3(0,0,0), Quaternion.identity);
 
         }
-        timer += Time.deltaTime;
+        timer -= Time.deltaTime; 
+        // handle live decreases 
         if (deathTrigger)
         {
             respawntimer += Time.deltaTime; 

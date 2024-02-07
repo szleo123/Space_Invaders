@@ -113,7 +113,7 @@ Transform:
   m_GameObject: {fileID: 703604639473593424}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 10.651306, y: 0.00000047683716, z: -12.743626}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -189,8 +189,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.308794, y: 0.86632425, z: 1.4724989}
+  m_Center: {x: -0.00016021729, y: 0.15367952, z: -0.057273388}
 --- !u!54 &4072379783487658299
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -199,7 +199,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 703604639473593424}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 10
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -241,3 +241,7 @@ MonoBehaviour:
   moveSound2: {fileID: 8300000, guid: 4bfb28deab3b6764e8234b8117f871cf, type: 3}
   moveSound3: {fileID: 8300000, guid: e1d52c10d804fd142933fa1bc033de81, type: 3}
   moveSound4: {fileID: 8300000, guid: 3964d333db852da4cb9e995c56bf3320, type: 3}
+  level: 0
+  howlong: 0
+  dead: 0
+  grayMaterial: {fileID: 2100000, guid: 48ef375fff6576849bf23027d6bfa84e, type: 2}
